@@ -52,7 +52,13 @@ var RawSqlResultsToEntityTransformer = /** @class */ (function () {
             keys.push.apply(keys, tslib_1.__spread(alias.metadata.primaryColumns.map(function (column) { return DriverUtils.buildColumnAlias(_this.driver, alias.name, column.databaseName); })));
         }
         rawResults.forEach(function (rawResult) {
-            var id = keys.map(function (key) { return rawResult[key]; }).join("_"); // todo: check partial
+            var id = keys.map(function (key) {
+                var keyValue = rawResult[key];
+                if (Buffer.isBuffer(keyValue)) {
+                    return keyValue.toString("hex");
+                }
+                return keyValue;
+            }).join("_"); // todo: check partial
             if (!id)
                 return;
             var items = map.get(id);

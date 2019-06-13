@@ -125,7 +125,7 @@ var EntityMetadataBuilder = /** @class */ (function () {
                         _this.computeEntityMetadataStep2(entityMetadata);
                     }
                 }
-                if (foreignKey && _this.connection.driver instanceof CockroachDriver_1.CockroachDriver) {
+                if (foreignKey && !uniqueConstraint) {
                     var index = new IndexMetadata_1.IndexMetadata({
                         entityMetadata: relation.entityMetadata,
                         columns: foreignKey.columns,

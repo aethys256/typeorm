@@ -10,6 +10,7 @@ var EntityCreateCommand_1 = require("./commands/EntityCreateCommand");
 var MigrationCreateCommand_1 = require("./commands/MigrationCreateCommand");
 var MigrationRunCommand_1 = require("./commands/MigrationRunCommand");
 var MigrationRevertCommand_1 = require("./commands/MigrationRevertCommand");
+var MigrationShowCommand_1 = require("./commands/MigrationShowCommand");
 var SubscriberCreateCommand_1 = require("./commands/SubscriberCreateCommand");
 var SchemaLogCommand_1 = require("./commands/SchemaLogCommand");
 var MigrationGenerateCommand_1 = require("./commands/MigrationGenerateCommand");
@@ -27,6 +28,7 @@ yargs
     .command(new MigrationCreateCommand_1.MigrationCreateCommand())
     .command(new MigrationGenerateCommand_1.MigrationGenerateCommand())
     .command(new MigrationRunCommand_1.MigrationRunCommand())
+    .command(new MigrationShowCommand_1.MigrationShowCommand())
     .command(new MigrationRevertCommand_1.MigrationRevertCommand())
     .command(new VersionCommand_1.VersionCommand())
     .command(new CacheClearCommand_1.CacheClearCommand())

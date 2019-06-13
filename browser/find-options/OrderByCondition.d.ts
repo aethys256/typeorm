@@ -10,6 +10,6 @@
 export declare type OrderByCondition = {
     [columnName: string]: ("ASC" | "DESC") | {
         order: "ASC" | "DESC";
-        nulls: "NULLS FIRST" | "NULLS LAST";
+        nulls?: "NULLS FIRST" | "NULLS LAST";
     };
 };

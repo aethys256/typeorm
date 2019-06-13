@@ -6,7 +6,7 @@ var __1 = require("../../");
  * multiple instances of Entity1. To achieve it, this type of relation creates a junction table, where it storage
  * entity1 and entity2 ids. This is owner side of the relationship.
  */
-function ManyToMany(typeFunction, inverseSideOrOptions, options) {
+function ManyToMany(typeFunctionOrTarget, inverseSideOrOptions, options) {
     // normalize parameters
     var inverseSideProperty;
     if (typeof inverseSideOrOptions === "object") {
@@ -31,7 +31,7 @@ function ManyToMany(typeFunction, inverseSideOrOptions, options) {
             // propertyType: reflectedType,
             relationType: "many-to-many",
             isLazy: isLazy,
-            type: typeFunction,
+            type: typeFunctionOrTarget,
             inverseSideProperty: inverseSideProperty,
             options: options
         });

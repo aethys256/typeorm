@@ -1,5 +1,4 @@
 import { FindRelationsNotFoundError } from "../error/FindRelationsNotFoundError";
-import { shorten } from "../util/StringUtils";
 /**
  * Utilities to work with FindOptions.
  */
@@ -178,11 +177,8 @@ var FindOptionsUtils = /** @class */ (function () {
         // go through all matched relations and add join for them
         matchedBaseRelations.forEach(function (relation) {
             // generate a relation alias
-            var relationAlias = alias + "__" + relation;
-            // shorten it if needed by the driver
-            if (qb.connection.driver.maxAliasLength && relationAlias.length > qb.connection.driver.maxAliasLength) {
-                relationAlias = shorten(relationAlias);
-            }
+            var _a = qb.connection, driver = _a.driver, namingStrategy = _a.namingStrategy;
+            var relationAlias = namingStrategy.joinRelationAlias(alias, relation, driver.maxAliasLength);
             // add a join for the found relation
             var selection = alias + "." + relation;
             qb.leftJoinAndSelect(selection, relationAlias);
@@ -200,8 +196,9 @@ var FindOptionsUtils = /** @class */ (function () {
     };
     FindOptionsUtils.joinEagerRelations = function (qb, alias, metadata) {
         var _this = this;
+        var _a = qb.connection, driver = _a.driver, namingStrategy = _a.namingStrategy;
         metadata.eagerRelations.forEach(function (relation) {
-            var relationAlias = qb.connection.namingStrategy.eagerJoinRelationAlias(alias, relation.propertyPath);
+            var relationAlias = namingStrategy.eagerJoinRelationAlias(alias, relation.propertyPath, driver.maxAliasLength);
             qb.leftJoinAndSelect(alias + "." + relation.propertyPath, relationAlias);
             _this.joinEagerRelations(qb, relationAlias, relation.inverseEntityMetadata);
         });

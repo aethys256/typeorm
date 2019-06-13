@@ -126,8 +126,13 @@ var DefaultNamingStrategy = /** @class */ (function () {
     DefaultNamingStrategy.prototype.prefixTableName = function (prefix, tableName) {
         return prefix + tableName;
     };
-    DefaultNamingStrategy.prototype.eagerJoinRelationAlias = function (alias, propertyPath) {
-        return alias + "_" + propertyPath.replace(".", "_");
+    DefaultNamingStrategy.prototype.joinRelationAlias = function (alias, relation, maxAliasLength) {
+        var relationAlias = alias + "__" + relation;
+        return maxAliasLength && relationAlias.length > maxAliasLength ? StringUtils_1.shorten(relationAlias) : relationAlias;
+    };
+    DefaultNamingStrategy.prototype.eagerJoinRelationAlias = function (alias, propertyPath, maxAliasLength) {
+        var relationAlias = alias + "__" + propertyPath.replace(".", "__");
+        return maxAliasLength && relationAlias.length > maxAliasLength ? StringUtils_1.shorten(relationAlias) : relationAlias;
     };
     return DefaultNamingStrategy;
 }());

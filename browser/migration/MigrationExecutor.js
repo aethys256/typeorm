@@ -30,6 +30,61 @@ var MigrationExecutor = /** @class */ (function () {
     // Public Methods
     // -------------------------------------------------------------------------
     /**
+     * Lists all migrations and whether they have been executed or not
+     * returns true if there are unapplied migrations
+     */
+    MigrationExecutor.prototype.showMigrations = function () {
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            var e_1, _a, hasUnappliedMigrations, queryRunner, executedMigrations, allMigrations, _loop_1, this_1, allMigrations_1, allMigrations_1_1, migration;
+            return tslib_1.__generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        hasUnappliedMigrations = false;
+                        queryRunner = this.queryRunner || this.connection.createQueryRunner("master");
+                        // create migrations table if its not created yet
+                        return [4 /*yield*/, this.createMigrationsTableIfNotExist(queryRunner)];
+                    case 1:
+                        // create migrations table if its not created yet
+                        _b.sent();
+                        return [4 /*yield*/, this.loadExecutedMigrations(queryRunner)];
+                    case 2:
+                        executedMigrations = _b.sent();
+                        allMigrations = this.getMigrations();
+                        _loop_1 = function (migration) {
+                            var executedMigration = executedMigrations.find(function (executedMigration) { return executedMigration.name === migration.name; });
+                            if (executedMigration) {
+                                this_1.connection.logger.logSchemaBuild(" [X] " + migration.name);
+                            }
+                            else {
+                                hasUnappliedMigrations = true;
+                                this_1.connection.logger.logSchemaBuild(" [ ] " + migration.name);
+                            }
+                        };
+                        this_1 = this;
+                        try {
+                            for (allMigrations_1 = tslib_1.__values(allMigrations), allMigrations_1_1 = allMigrations_1.next(); !allMigrations_1_1.done; allMigrations_1_1 = allMigrations_1.next()) {
+                                migration = allMigrations_1_1.value;
+                                _loop_1(migration);
+                            }
+                        }
+                        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                        finally {
+                            try {
+                                if (allMigrations_1_1 && !allMigrations_1_1.done && (_a = allMigrations_1.return)) _a.call(allMigrations_1);
+                            }
+                            finally { if (e_1) throw e_1.error; }
+                        }
+                        if (!!this.queryRunner) return [3 /*break*/, 4];
+                        return [4 /*yield*/, queryRunner.release()];
+                    case 3:
+                        _b.sent();
+                        _b.label = 4;
+                    case 4: return [2 /*return*/, hasUnappliedMigrations];
+                }
+            });
+        });
+    };
+    /**
      * Executes all pending migrations. Pending migrations are migrations that are not yet executed,
      * thus not saved in the database.
      */

@@ -132,6 +132,11 @@ export declare class Connection {
         transaction?: boolean;
     }): Promise<void>;
     /**
+     * Lists all migrations and whether they have been run.
+     * Returns true if there are no pending migrations
+     */
+    showMigrations(): Promise<boolean>;
+    /**
      * Checks if entity metadata exist for the given entity class, target name or table name.
      */
     hasMetadata(target: Function | EntitySchema<any> | string): boolean;

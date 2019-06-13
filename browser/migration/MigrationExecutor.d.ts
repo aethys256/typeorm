@@ -15,6 +15,11 @@ export declare class MigrationExecutor {
     private readonly migrationsTableName;
     constructor(connection: Connection, queryRunner?: QueryRunner | undefined);
     /**
+     * Lists all migrations and whether they have been executed or not
+     * returns true if there are unapplied migrations
+     */
+    showMigrations(): Promise<boolean>;
+    /**
      * Executes all pending migrations. Pending migrations are migrations that are not yet executed,
      * thus not saved in the database.
      */

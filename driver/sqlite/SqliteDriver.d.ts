@@ -33,7 +33,7 @@ export declare class SqliteDriver extends AbstractSqliteDriver {
     /**
      * Creates connection with the database.
      */
-    protected createDatabaseConnection(): Promise<void>;
+    protected createDatabaseConnection(): Promise<any>;
     /**
      * If driver dependency is not given explicitly, then try to load it via "require".
      */

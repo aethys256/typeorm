@@ -6,7 +6,7 @@ var __1 = require("../../");
  * Entity2 can have a multiple instances of Entity1. Entity1 is an owner of the relationship, and storages Entity2 id
  * on its own side.
  */
-function ManyToOne(typeFunction, inverseSideOrOptions, options) {
+function ManyToOne(typeFunctionOrTarget, inverseSideOrOptions, options) {
     // normalize parameters
     var inverseSideProperty;
     if (typeof inverseSideOrOptions === "object") {
@@ -31,7 +31,7 @@ function ManyToOne(typeFunction, inverseSideOrOptions, options) {
             // propertyType: reflectedType,
             relationType: "many-to-one",
             isLazy: isLazy,
-            type: typeFunction,
+            type: typeFunctionOrTarget,
             inverseSideProperty: inverseSideProperty,
             options: options
         });

@@ -280,7 +280,13 @@ var Broadcaster = /** @class */ (function () {
             if (_this.queryRunner.connection.subscribers.length) {
                 _this.queryRunner.connection.subscribers.forEach(function (subscriber) {
                     if (_this.isAllowedSubscriber(subscriber, metadata.target) && subscriber.afterLoad) {
-                        var executionResult = subscriber.afterLoad(entity);
+                        var executionResult = subscriber.afterLoad(entity, {
+                            connection: _this.queryRunner.connection,
+                            queryRunner: _this.queryRunner,
+                            manager: _this.queryRunner.manager,
+                            entity: entity,
+                            metadata: metadata
+                        });
                         if (executionResult instanceof Promise)
                             result.promises.push(executionResult);
                         result.count++;

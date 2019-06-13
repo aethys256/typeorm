@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { RandomGenerator } from "../util/RandomGenerator";
-import { camelCase, snakeCase, titleCase } from "../util/StringUtils";
+import { camelCase, shorten, snakeCase, titleCase } from "../util/StringUtils";
 import { Table } from "../schema-builder/table/Table";
 /**
  * Naming strategy that is used by default.
@@ -124,8 +124,13 @@ var DefaultNamingStrategy = /** @class */ (function () {
     DefaultNamingStrategy.prototype.prefixTableName = function (prefix, tableName) {
         return prefix + tableName;
     };
-    DefaultNamingStrategy.prototype.eagerJoinRelationAlias = function (alias, propertyPath) {
-        return alias + "_" + propertyPath.replace(".", "_");
+    DefaultNamingStrategy.prototype.joinRelationAlias = function (alias, relation, maxAliasLength) {
+        var relationAlias = alias + "__" + relation;
+        return maxAliasLength && relationAlias.length > maxAliasLength ? shorten(relationAlias) : relationAlias;
+    };
+    DefaultNamingStrategy.prototype.eagerJoinRelationAlias = function (alias, propertyPath, maxAliasLength) {
+        var relationAlias = alias + "__" + propertyPath.replace(".", "__");
+        return maxAliasLength && relationAlias.length > maxAliasLength ? shorten(relationAlias) : relationAlias;
     };
     return DefaultNamingStrategy;
 }());

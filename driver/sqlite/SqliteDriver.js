@@ -65,8 +65,17 @@ var SqliteDriver = /** @class */ (function (_super) {
      * Creates connection with the database.
      */
     SqliteDriver.prototype.createDatabaseConnection = function () {
-        var _this = this;
-        return new Promise(function (ok, fail) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            // Internal function to run a command on the connection and fail if an error occured.
+            function run(line) {
+                return new Promise(function (ok, fail) {
+                    databaseConnection.run(line, function (err) {
+                        if (err)
+                            return fail(err);
+                        ok();
+                    });
+                });
+            }
             var databaseConnection;
             var _this = this;
             return tslib_1.__generator(this, function (_a) {
@@ -74,29 +83,31 @@ var SqliteDriver = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, this.createDatabaseDirectory(this.options.database)];
                     case 1:
                         _a.sent();
-                        databaseConnection = new this.sqlite.Database(this.options.database, function (err) {
-                            if (err)
-                                return fail(err);
-                            // we need to enable foreign keys in sqlite to make sure all foreign key related features
-                            // working properly. this also makes onDelete to work with sqlite.
-                            databaseConnection.run("PRAGMA foreign_keys = ON;", function (err, result) {
-                                if (err)
-                                    return fail(err);
-                                ok(databaseConnection);
-                            });
-                            // in the options, if encryption key for for SQLCipher is setted.
-                            if (_this.options.key) {
-                                databaseConnection.run("PRAGMA key = " + _this.options.key + ";", function (err, result) {
+                        return [4 /*yield*/, new Promise(function (ok, fail) {
+                                var connection = new _this.sqlite.Database(_this.options.database, function (err) {
                                     if (err)
                                         return fail(err);
-                                    ok(databaseConnection);
+                                    ok(connection);
                                 });
-                            }
-                        });
-                        return [2 /*return*/];
+                            })];
+                    case 2:
+                        databaseConnection = _a.sent();
+                        // we need to enable foreign keys in sqlite to make sure all foreign key related features
+                        // working properly. this also makes onDelete to work with sqlite.
+                        return [4 /*yield*/, run("PRAGMA foreign_keys = ON;")];
+                    case 3:
+                        // we need to enable foreign keys in sqlite to make sure all foreign key related features
+                        // working properly. this also makes onDelete to work with sqlite.
+                        _a.sent();
+                        if (!this.options.key) return [3 /*break*/, 5];
+                        return [4 /*yield*/, run("PRAGMA key = " + JSON.stringify(this.options.key) + ";")];
+                    case 4:
+                        _a.sent();
+                        _a.label = 5;
+                    case 5: return [2 /*return*/, databaseConnection];
                 }
             });
-        }); });
+        });
     };
     /**
      * If driver dependency is not given explicitly, then try to load it via "require".

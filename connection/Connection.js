@@ -306,6 +306,26 @@ var Connection = /** @class */ (function () {
         });
     };
     /**
+     * Lists all migrations and whether they have been run.
+     * Returns true if there are no pending migrations
+     */
+    Connection.prototype.showMigrations = function () {
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            var migrationExecutor;
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.isConnected) {
+                            throw new CannotExecuteNotConnectedError_1.CannotExecuteNotConnectedError(this.name);
+                        }
+                        migrationExecutor = new MigrationExecutor_1.MigrationExecutor(this);
+                        return [4 /*yield*/, migrationExecutor.showMigrations()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
      * Checks if entity metadata exist for the given entity class, target name or table name.
      */
     Connection.prototype.hasMetadata = function (target) {

@@ -86,7 +86,7 @@ var RelationCountLoader = /** @class */ (function () {
                                 inverseSideTableName = relationCountAttr.joinInverseSideMetadata.tableName;
                                 inverseSideTableAlias = relationCountAttr.alias || inverseSideTableName;
                                 junctionTableName = relationCountAttr.relation.junctionEntityMetadata.tableName;
-                                condition = junctionAlias + "." + firstJunctionColumn.propertyName + " IN (" + referenceColumnValues + ")" +
+                                condition = junctionAlias + "." + firstJunctionColumn.propertyName + " IN (" + referenceColumnValues.map(function (vals) { return isNaN(vals) ? "'" + vals + "'" : vals; }) + ")" +
                                     " AND " + junctionAlias + "." + secondJunctionColumn.propertyName + " = " + inverseSideTableAlias + "." + inverseJoinColumnName;
                                 qb = this.connection.createQueryBuilder(this.queryRunner);
                                 qb.select(junctionAlias + "." + firstJunctionColumn.propertyName, "parentId")
